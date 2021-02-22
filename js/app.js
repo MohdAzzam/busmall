@@ -83,7 +83,7 @@ container.addEventListener('click', imgClik);
 function imgClik(event) {
   console.log(event);
 
-  if (userTry < maxClicks) {
+  if (userTry <= maxClicks) {
 
     console.log(userTry);
     if (event.target.id === 'imgOne') {
