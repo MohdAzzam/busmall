@@ -1,7 +1,7 @@
 'use strict';
 
 
-let maxClicks = 5;
+let maxClicks = 25;
 let userTry = 1;
 let allObject = [];
 let container = document.getElementById('container');
