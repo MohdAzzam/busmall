@@ -67,7 +67,7 @@ function renderThreeRandomImg() {
 }
 
 function generateRandomImg() {
-
+  console.log('array   ', arrayLastNumber);
   let random = Math.floor(Math.random() * allObject.length);
   while (arrayLastNumber.includes(random)) {
     random = Math.floor(Math.random() * allObject.length);
