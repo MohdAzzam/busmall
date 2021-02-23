@@ -14,6 +14,7 @@ function BussMall(productName, imgSource) {
   this.imgShown = 0;
   allObject.push(this);
   productArrayName.push(this.productName);
+
 }
 
 new BussMall('bag', 'bag.jpg');
@@ -84,8 +85,6 @@ function imgClik(event) {
   console.log(event);
 
   if (userTry <= maxClicks) {
-
-    console.log(userTry);
     if (event.target.id === 'imgOne') {
       userTry++;
       allObject[imgOneIndex].imgShown++;
@@ -99,6 +98,7 @@ function imgClik(event) {
       allObject[imgThreeIndex].imgShown++;
     }
     event.preventDefault();
+    addVote();
     renderThreeRandomImg();
   } else {
     let list = document.getElementById('list');
@@ -112,6 +112,7 @@ function imgClik(event) {
     }
     container.removeEventListener('click', imgClik);
     document.getElementById('btn').style.display = 'block';
+
   }
 
 
@@ -147,3 +148,40 @@ function ChartShow() {
     options: {}
   });
 }
+
+function addVote() {
+  let votes = JSON.stringify(allObject);
+  localStorage.setItem('Votes', votes);
+}
+
+
+
+function getVotes() {
+  let getVote = localStorage.getItem('Votes');
+  if (getVote) {
+    allObject = JSON.parse(getVote);
+  }else{
+    allObject=[];
+  }
+}
+
+
+getVotes();
+
+
+function showResult() {
+  let listSel = document.getElementById('selectedEl');
+  let li;
+  if (allObject) {
+    for (let i = 0; i < allObject.length; i++) {
+      li = document.createElement('li');
+      listSel.appendChild(li);
+      li.textContent = `The   ${allObject[i].productName} has been Show ${allObject[i].imgeCount} has been selected  ${allObject[i].selectedImgCount} `;
+    }
+
+  }
+
+}
+
+
+
