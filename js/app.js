@@ -1,6 +1,6 @@
 'use strict';
 
-let maxClicks = 5;
+let maxClicks = 25;
 let userTry = 1;
 let allObject = [];
 let container = document.getElementById('container');
@@ -14,6 +14,7 @@ function BussMall(productName, imgSource) {
   this.selectedImgCount = 0;
   allObject.push(this);
   productArrayName.push(this.productName);
+
 }
 
 new BussMall('bag', 'bag.jpg');
@@ -80,7 +81,6 @@ renderThreeRandomImg();
 container.addEventListener('click', imgClik);
 function imgClik(event) {
   if (userTry <= maxClicks) {
-    console.log(userTry);
     if (event.target.id === 'imgOne') {
       userTry++;
       allObject[imgOneIndex].selectedImgCount++;
@@ -110,7 +110,6 @@ function imgClik(event) {
     document.getElementById('btn').style.display = 'block';
 
   }
-  getVotes();
 
 
 }
@@ -151,28 +150,36 @@ function chartShow() {
 function addVote() {
   let votes = JSON.stringify(allObject);
   localStorage.setItem('Votes', votes);
-
 }
 
-let listOfVotes = [];
+
+
 function getVotes() {
   let getVote = localStorage.getItem('Votes');
-  if (getVotes) {
-    listOfVotes = JSON.parse(getVote);
+  if (getVote) {
+    allObject = JSON.parse(getVote);
+  }else{
+    allObject=[];
   }
 }
 
-// getVotes();
+
+getVotes();
+
 
 function showResult() {
-  getVotes();
-  console.log(listOfVotes);
   let listSel = document.getElementById('selectedEl');
   let li;
-  for (let i = 0; i < allObject.length; i++) {
-    li = document.createElement('li');
-    listSel.appendChild(li);
-    li.textContent = `The   ${allObject[i].productName} has been Show ${listOfVotes[i].imgeCount} has been selected  ${listOfVotes[i].selectedImgCount} `;
+  if (allObject) {
+    for (let i = 0; i < allObject.length; i++) {
+      li = document.createElement('li');
+      listSel.appendChild(li);
+      li.textContent = `The   ${allObject[i].productName} has been Show ${allObject[i].imgeCount} has been selected  ${allObject[i].selectedImgCount} `;
+    }
+
   }
+
 }
+
+
 
