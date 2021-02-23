@@ -1,5 +1,4 @@
 'use strict';
-
 let maxClicks = 25;
 let userTry = 1;
 let allObject = [];
