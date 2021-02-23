@@ -108,7 +108,6 @@ function imgClik(event) {
     }
     container.removeEventListener('click', imgClik);
     document.getElementById('btn').style.display = 'block';
-    
   }
   getVotes();
 
