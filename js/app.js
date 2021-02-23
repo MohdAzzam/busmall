@@ -108,7 +108,7 @@ function imgClik(event) {
     }
     container.removeEventListener('click', imgClik);
     document.getElementById('btn').style.display = 'block';
-    
+
   }
   getVotes();
 
@@ -154,11 +154,11 @@ function addVote() {
 
 }
 
-let listOfVotes =[];
+let listOfVotes = [];
 function getVotes() {
   let getVote = localStorage.getItem('Votes');
-  if(getVotes){
-    listOfVotes= JSON.parse(getVote);
+  if (getVotes) {
+    listOfVotes = JSON.parse(getVote);
   }
 }
 
