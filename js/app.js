@@ -103,7 +103,7 @@ function imgClik(event) {
       countArrImg.push(allObject[j].selectedImgCount);
       selectedImgArr.push(allObject[j].imgeCount);
     }
-  ChartShow();
+    chartShow();
 
     container.removeEventListener('click', imgClik);
     document.getElementById('btn').style.display = 'block';
