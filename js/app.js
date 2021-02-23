@@ -1,5 +1,4 @@
 'use strict';
-
 let maxClicks = 25;
 let userTry = 1;
 let allObject = [];
@@ -11,9 +10,10 @@ function BussMall(productName, imgSource) {
   this.productName = productName;
   this.imgSource = 'img/' + imgSource;
   this.imgeCount = 0;
-  this.imgShown = 0;
+  this.selectedImgCount = 0;
   allObject.push(this);
   productArrayName.push(this.productName);
+
 }
 
 new BussMall('bag', 'bag.jpg');
@@ -36,7 +36,6 @@ new BussMall('unicorn', 'unicorn.jpg');
 new BussMall('usb', 'usb.gif');
 new BussMall('water-can', 'water-can.jpg');
 new BussMall('wine-glass', 'wine-glass.jpg');
-
 let imgOneIndex;
 let imgTwoIndex;
 let imgThreeIndex;
@@ -59,15 +58,14 @@ function renderThreeRandomImg() {
   allObject[imgOneIndex].imgeCount++;
   allObject[imgTwoIndex].imgeCount++;
   allObject[imgThreeIndex].imgeCount++;
-  console.log(allObject[imgOneIndex].productName, allObject[imgTwoIndex].productName, allObject[imgThreeIndex].productName);
   arrayLastNumber[0] = imgOneIndex;
   arrayLastNumber[1] = imgTwoIndex;
   arrayLastNumber[2] = imgThreeIndex;
 
+
 }
 
 function generateRandomImg() {
-
   let random = Math.floor(Math.random() * allObject.length);
   while (arrayLastNumber.includes(random)) {
     random = Math.floor(Math.random() * allObject.length);
@@ -76,29 +74,24 @@ function generateRandomImg() {
 }
 
 renderThreeRandomImg();
-
-console.log(arrayLastNumber);
-
 container.addEventListener('click', imgClik);
 function imgClik(event) {
-  console.log(event);
-
   if (userTry <= maxClicks) {
-
-    console.log(userTry);
     if (event.target.id === 'imgOne') {
       userTry++;
-      allObject[imgOneIndex].imgShown++;
+      allObject[imgOneIndex].selectedImgCount++;
     }
     if (event.target.id === 'imgTwo') {
       userTry++;
-      allObject[imgTwoIndex].imgShown++;
+      allObject[imgTwoIndex].selectedImgCount++;
     }
     if (event.target.id === 'imgThree') {
       userTry++;
-      allObject[imgThreeIndex].imgShown++;
+      allObject[imgThreeIndex].selectedImgCount++;
     }
     event.preventDefault();
+
+    addVote(); //save in local Storge
     renderThreeRandomImg();
   } else {
     let list = document.getElementById('list');
@@ -106,25 +99,25 @@ function imgClik(event) {
     for (let j = 0; j < allObject.length; j++) {
       li = document.createElement('li');
       list.appendChild(li);
-      li.textContent = `${allObject[j].productName} it has Chossed ${allObject[j].imgShown} and it Show ${allObject[j].imgeCount}`;
-      countArrImg.push(allObject[j].imgShown);
+      li.textContent = `${allObject[j].productName} it has Chossed ${allObject[j].selectedImgCount} and it Show ${allObject[j].imgeCount}`;
+      countArrImg.push(allObject[j].selectedImgCount);
       selectedImgArr.push(allObject[j].imgeCount);
     }
   ChartShow();
 
     container.removeEventListener('click', imgClik);
     document.getElementById('btn').style.display = 'block';
+
   }
 
 
 }
-
-
-function showul() {
+function showList() {
   document.getElementById('list').style.display = 'block';
 
+
 }
-function ChartShow() {
+function chartShow() {
   let ctx = document.getElementById('myChart').getContext('2d');
   let chart = new Chart(ctx, {
     // The type of chart we want to create
@@ -147,4 +140,34 @@ function ChartShow() {
     // Configuration options go here
     options: {}
   });
+}
+
+function addVote() {
+  let votes = JSON.stringify(allObject);
+  localStorage.setItem('Votes', votes);
+}
+
+
+function getVotes() {
+
+  let getVote = localStorage.getItem('Votes');
+  if (getVote) {
+    allObject = JSON.parse(getVote);
+  }
+}
+getVotes();
+
+
+function showResult() {
+  let listSel = document.getElementById('selectedEl');
+  let li;
+  if (allObject) {
+    for (let i = 0; i < allObject.length; i++) {
+      li = document.createElement('li');
+      listSel.appendChild(li);
+      li.textContent = `The   ${allObject[i].productName} has been Show ${allObject[i].imgeCount} has been selected  ${allObject[i].selectedImgCount} `;
+    }
+
+  }
+
 }
