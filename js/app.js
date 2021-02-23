@@ -1,6 +1,6 @@
 'use strict';
 
-let maxClicks = 5;
+let maxClicks = 25;
 let userTry = 1;
 let allObject = [];
 let container = document.getElementById('container');
@@ -11,7 +11,7 @@ function BussMall(productName, imgSource) {
   this.productName = productName;
   this.imgSource = 'img/' + imgSource;
   this.imgeCount = 0;
-  this.selectedImgCount = 0;
+  this.imgShown = 0;
   allObject.push(this);
   productArrayName.push(this.productName);
 }
@@ -64,10 +64,10 @@ function renderThreeRandomImg() {
   arrayLastNumber[1] = imgTwoIndex;
   arrayLastNumber[2] = imgThreeIndex;
 
-
 }
 
 function generateRandomImg() {
+  console.log('array   ', arrayLastNumber);
   let random = Math.floor(Math.random() * allObject.length);
   while (arrayLastNumber.includes(random)) {
     random = Math.floor(Math.random() * allObject.length);
@@ -77,24 +77,28 @@ function generateRandomImg() {
 
 renderThreeRandomImg();
 
+console.log(arrayLastNumber);
+
 container.addEventListener('click', imgClik);
 function imgClik(event) {
+  console.log(event);
+
   if (userTry <= maxClicks) {
+
     console.log(userTry);
     if (event.target.id === 'imgOne') {
       userTry++;
-      allObject[imgOneIndex].selectedImgCount++;
+      allObject[imgOneIndex].imgShown++;
     }
     if (event.target.id === 'imgTwo') {
       userTry++;
-      allObject[imgTwoIndex].selectedImgCount++;
+      allObject[imgTwoIndex].imgShown++;
     }
     if (event.target.id === 'imgThree') {
       userTry++;
-      allObject[imgThreeIndex].selectedImgCount++;
+      allObject[imgThreeIndex].imgShown++;
     }
     event.preventDefault();
-    addVote(); //save in local Storge
     renderThreeRandomImg();
   } else {
     let list = document.getElementById('list');
@@ -102,27 +106,24 @@ function imgClik(event) {
     for (let j = 0; j < allObject.length; j++) {
       li = document.createElement('li');
       list.appendChild(li);
-      li.textContent = `${allObject[j].productName} it has Chossed ${allObject[j].selectedImgCount} and it Show ${allObject[j].imgeCount}`;
-      countArrImg.push(allObject[j].selectedImgCount);
+      li.textContent = `${allObject[j].productName} it has Chossed ${allObject[j].imgShown} and it Show ${allObject[j].imgeCount}`;
+      countArrImg.push(allObject[j].imgShown);
       selectedImgArr.push(allObject[j].imgeCount);
     }
     container.removeEventListener('click', imgClik);
     document.getElementById('btn').style.display = 'block';
   }
-  getVotes();
 
 
 }
 
 
-
-
-function showList() {
+function showul() {
   document.getElementById('list').style.display = 'block';
-  chartShow();
+  ChartShow();
 
 }
-function chartShow() {
+function ChartShow() {
   let ctx = document.getElementById('myChart').getContext('2d');
   let chart = new Chart(ctx, {
     // The type of chart we want to create
@@ -146,32 +147,3 @@ function chartShow() {
     options: {}
   });
 }
-
-function addVote() {
-  let votes = JSON.stringify(allObject);
-  localStorage.setItem('Votes', votes);
-
-}
-
-let listOfVotes =[];
-function getVotes() {
-  let getVote = localStorage.getItem('Votes');
-  if(getVotes){
-    listOfVotes= JSON.parse(getVote);
-  }
-}
-
-// getVotes();
-
-function showResult() {
-  getVotes();
-  console.log(listOfVotes);
-  let listSel = document.getElementById('selectedEl');
-  let li;
-  for (let i = 0; i < allObject.length; i++) {
-    li = document.createElement('li');
-    listSel.appendChild(li);
-    li.textContent = `The   ${allObject[i].productName} has been Show ${listOfVotes[i].imgeCount} has been selected  ${listOfVotes[i].selectedImgCount} `;
-  }
-}
-
