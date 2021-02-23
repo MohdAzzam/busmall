@@ -110,6 +110,8 @@ function imgClik(event) {
       countArrImg.push(allObject[j].imgShown);
       selectedImgArr.push(allObject[j].imgeCount);
     }
+  ChartShow();
+
     container.removeEventListener('click', imgClik);
     document.getElementById('btn').style.display = 'block';
   }
@@ -120,7 +122,6 @@ function imgClik(event) {
 
 function showul() {
   document.getElementById('list').style.display = 'block';
-  ChartShow();
 
 }
 function ChartShow() {
